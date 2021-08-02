@@ -86,7 +86,7 @@ func TestStoreWins(t *testing.T) {
 	})
 }
 
-func TestLeage(t *testing.T) {
+func TestLeague(t *testing.T) {
 	store := StubPlayerStore{}
 	server := NewPlayerServer(&store)
 
