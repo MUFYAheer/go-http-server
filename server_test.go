@@ -170,3 +170,10 @@ func assertJSONHeader(t testing.TB, response *httptest.ResponseRecorder, want st
 		t.Errorf("response did not have content-type of %s, got %v", want, response.Result().Header)
 	}
 }
+
+func assertScoreEqual(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("incurrect number of wins, got %d, want %d", got, want)
+	}
+}
