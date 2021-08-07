@@ -1,3 +1,3 @@
-module go-http-server
+module poker
 
 go 1.16
