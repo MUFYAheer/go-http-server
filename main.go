@@ -16,7 +16,11 @@ func main() {
 	}
 	defer db.Close()
 
-	store := NewFileSystemPlayerStore(db)
+	store, err := NewFileSystemPlayerStore(db)
+
+	if err != nil {
+		log.Fatalf("problem creating file system player store, %v", err)
+	}
 
 	server := NewPlayerServer(store)
 
