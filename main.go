@@ -16,9 +16,9 @@ func main() {
 	}
 	defer db.Close()
 
-	store := FileSystemPlayerStore{db}
+	store := NewFileSystemPlayerStore(db)
 
-	server := NewPlayerServer(&store)
+	server := NewPlayerServer(store)
 
 	log.Fatal(http.ListenAndServe(":9000", server))
 }
