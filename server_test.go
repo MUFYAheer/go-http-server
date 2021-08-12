@@ -83,14 +83,7 @@ func TestStoreWins(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusAccepted)
-
-		if len(store.winCalls) != 1 {
-			t.Errorf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
-		}
-
-		if store.winCalls[0] != player {
-			t.Errorf("did not store correct winner got %q want %q", store.winCalls[0], player)
-		}
+		assertPlayerScore(t, &store, player)
 	})
 }
 
@@ -175,5 +168,19 @@ func assertScoreEqual(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("incurrect number of wins, got %d, want %d", got, want)
+	}
+
+}
+
+func assertPlayerScore(t testing.TB, store *StubPlayerStore, winner string) {
+	t.Helper()
+	if len(store.winCalls) != 1 {
+		t.Fatalf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
+	}
+
+	got := store.winCalls[0]
+
+	if got != winner {
+		t.Errorf("didn't record correct winner, got %q, want %q", got, winner)
 	}
 }
