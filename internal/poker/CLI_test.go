@@ -1,6 +1,7 @@
 package poker_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 	"time"
@@ -49,8 +50,39 @@ func TestCLI(t *testing.T) {
 		cli := poker.NewCLI(playerStore, in, blindAlerter)
 		cli.PlayPoker()
 
-		if len(blindAlerter.alerts) != 1 {
-			t.Fatal("expected a blind alert to be scheduled")
+		cases := []struct {
+			expectedScheduleTime time.Duration
+			expectedAmount       int
+		}{
+			{0 * time.Second, 100},
+			{10 * time.Minute, 200},
+			{20 * time.Minute, 300},
+			{30 * time.Minute, 400},
+			{40 * time.Minute, 500},
+			{50 * time.Minute, 600},
+			{60 * time.Minute, 800},
+			{70 * time.Minute, 1000},
+			{80 * time.Minute, 2000},
+			{90 * time.Minute, 4000},
+			{100 * time.Minute, 8000},
+		}
+
+		for i, c := range cases {
+			t.Run(fmt.Sprintf("%d scheduled for %v", c.expectedAmount, c.expectedScheduleTime), func(t *testing.T) {
+				if len(blindAlerter.alerts) <= i {
+					t.Fatalf("alert %d was not scheduled %v", i, c.expectedScheduleTime)
+				}
+
+				alert := blindAlerter.alerts[i]
+
+				if alert.amount != c.expectedAmount {
+					t.Errorf("got amount %d, want %d", alert.amount, c.expectedAmount)
+				}
+
+				if alert.scheduledAt != c.expectedScheduleTime {
+					t.Errorf("got scheduled time at %v, want %v", alert.scheduledAt, c.expectedScheduleTime)
+				}
+			})
 		}
 	})
 }
