@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"poker"
+
+	"github.com/MUFYAheer/go-http-server/internal/poker"
 )
 
 const dbFileName = "game.db.json"
