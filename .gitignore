@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-go-http-server
+*.db.json
 
 # Test binary, built with `go test -c`
 *.test
